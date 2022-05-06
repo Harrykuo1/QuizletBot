@@ -79,9 +79,21 @@ WSGI_APPLICATION = 'QuizletBot.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': config('DB_DATABASE'),
+        'USER': config('DB_USERNAME'),
+        'PASSWORD': config('DB_PASSWORD'),
+        'HOST': 'mysql',
+        'PORT': '3306'
+    },
+    'lineBotdb': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': config('DB_DATABASE'),
+        'USER': config('DB_USERNAME'),
+        'PASSWORD': config('DB_PASSWORD'),
+        'HOST': 'mysql',
+        'PORT': '3306'
+    },
 }
 
 

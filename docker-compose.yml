@@ -1,0 +1,42 @@
+version: '3'
+
+services:
+  app:
+    image: python:3.9.12-buster
+    build:
+      context: .
+    ports:
+      - "28000:8000"
+    dns:
+      - 8.8.8.8
+    volumes:
+      - .:/app
+    depends_on:
+      - mysql  
+    command: >
+      sh -c "python manage.py runserver 0.0.0.0:8000"
+    
+    
+  mysql:
+    image: mysql
+    container_name: mysql
+    hostname: mysql
+    restart: always
+    command: --default-authentication-plugin=mysql_native_password --mysqlx=0
+    ports:
+      - 23306:3306
+    volumes:
+      - ./data/db:/var/lib/mysql
+      - ./data/init:/docker-entrypoint-initdb.d
+    environment:
+      MYSQL_HOST: localhost 
+      MYSQL_PORT: 3306 
+      MYSQL_DATABASE: '${DB_DATABASE}'
+      MYSQL_USER: '${DB_USERNAME}'
+      MYSQL_PASSWORD: '${DB_PASSWORD}'
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+      MYSQL_ROOT_PASSWORD: '${DB_ROOT_PASSWORD}'
+      MYSQL_ROOT_HOST: "%"
+    platform: linux/amd64
+
+    
