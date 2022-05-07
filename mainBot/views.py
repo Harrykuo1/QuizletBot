@@ -11,7 +11,9 @@ from linebot.models import MessageEvent, TextSendMessage
 from mainBot.models import User_Info, License_Key
 
 from mainBot.reqHandler.register import *
-from mainBot.reqHandler.cmdHandler import *
+from mainBot.reqHandler.label import *
+from mainBot.reqHandler.help import *
+
 
 line_bot_api = LineBotApi(settings.LINE_CHANNEL_ACCESS_TOKEN)
 parser = WebhookParser(settings.LINE_CHANNEL_SECRET)
@@ -59,6 +61,9 @@ def callback(request):
                 elif (User_Info.objects.filter(uid=uid).exists() == True):
                     if(usrMsgText[1:5] == '新增標籤'):
                         res = createLabel(usrMsgText, uid)
+                        message.extend(res)
+                    elif(usrMsgText[1:5] == '查詢標籤'):
+                        res = listLabel(usrMsgText, uid)
                         message.extend(res)
 
 

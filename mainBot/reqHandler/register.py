@@ -1,27 +1,6 @@
-from email import message
 from linebot.models import TextSendMessage
 
 from mainBot.models import User_Info, License_Key
-
-def welcomeHelp():
-    emoji = [
-        {
-            "index": 14,
-            "productId": "5ac1bfd5040ab15980c9b435",
-            "emojiId": "009"
-        },
-        {
-            "index": 41,
-            "productId": "5ac21a18040ab15980c9b43e",
-            "emojiId": "003"
-        }
-    ]
-
-    message = []
-    with open('/app/mainBot/textFile/welcomeHelp.txt', 'r') as f:
-        resMsgText = f.read()
-    message.append(TextSendMessage(text=resMsgText, emojis=emoji))
-    return message
 
 #handle regist
 def regist(usrMsgText , uid, usrName):
