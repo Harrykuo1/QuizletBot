@@ -10,6 +10,9 @@ from linebot.models import MessageEvent, TextSendMessage
 
 from mainBot.models import User_Info, License_Key
 
+from mainBot.reqHandler.register import *
+from mainBot.reqHandler.cmdHandler import *
+
 line_bot_api = LineBotApi(settings.LINE_CHANNEL_ACCESS_TOKEN)
 parser = WebhookParser(settings.LINE_CHANNEL_SECRET)
 
@@ -31,48 +34,33 @@ def callback(request):
             if isinstance(event, MessageEvent):
                 uid = event.source.user_id
                 profile = line_bot_api.get_profile(uid)
-                userName = profile.display_name
-                userMsgText = event.message.text
+                usrName = profile.display_name
+                usrMsgText = event.message.text
                 message = []
 
                 # 是否為指令
-                if(userMsgText[0] != '！'):
+                if(usrMsgText[0] != '!' and usrMsgText[0] != '！'):
                     continue
 
                 # 幫助
-                if(userMsgText == '！幫助'):
-                    with open('/app/mainBot/textFile/help.txt', 'r') as f:
-                        resMsgText = f.read()
+                if(usrMsgText[1:3] == '幫助'):
+                    res = welcomeHelp()
+                    message.extend(res)
 
-                    message.append(TextSendMessage(text=resMsgText))
+                    res = funcHelp()
+                    message.extend(res)
 
                 # 未註冊
                 elif (User_Info.objects.filter(uid=uid).exists() == False):
-                    if(userMsgText[:3] == '！註冊'):
-                        licenseKey = userMsgText[3:].replace(' ', '')
-
-                        if(License_Key.objects.filter(licenseKey=licenseKey).exists() == True):
-                            User_Info.objects.create(
-                                uid=uid, licenseKey=licenseKey)
-                            License_Key.objects.filter(
-                                licenseKey=licenseKey).delete()
-                            resMsgText = userName + '成功註冊'
-                            message.append(TextSendMessage(text=resMsgText))
-                        elif(len(licenseKey) == 0):
-                            resMsgText = '未輸入任何License key'
-                            message.append(TextSendMessage(text=resMsgText))
-                        else:
-                            resMsgText = 'License key錯誤'
-                            message.append(TextSendMessage(text=resMsgText))
-
-                    else:
-                        resMsgText = userName + '您好\n系統偵測到您並未註冊帳號\n\n若要註冊請輸入：\n！註冊+您的License Key'
-                        message.append(TextSendMessage(text=resMsgText))
+                    res = regist(usrMsgText, uid, usrName)
+                    message.extend(res)
 
                 # 已註冊
                 elif (User_Info.objects.filter(uid=uid).exists() == True):
-                    resMsgText = userName + '已註冊過'
-                    message.append(TextSendMessage(text=resMsgText))
+                    if(usrMsgText[1:5] == '新增標籤'):
+                        res = createLabel(usrMsgText, uid)
+                        message.extend(res)
+
 
                 line_bot_api.reply_message(event.reply_token, message)
 
