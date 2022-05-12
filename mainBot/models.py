@@ -18,8 +18,16 @@ class License_Key(models.Model):
 
 class Label_Url(models.Model):
     uid = models.CharField(max_length=50, null=False, default='')   
+    labelName = models.CharField(max_length=30, null=False, default='')   
+    url = models.CharField(max_length=200, null=False, default='')  
+    mdt = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.uid  
+
+class Global_Label_Url(models.Model): 
     labelName = models.CharField(max_length=50, null=False, default='')   
-    url = models.CharField(max_length=50, null=False, default='')  
+    url = models.CharField(max_length=200, null=False, default='')  
     mdt = models.DateTimeField(auto_now=True)
 
     def __str__(self):

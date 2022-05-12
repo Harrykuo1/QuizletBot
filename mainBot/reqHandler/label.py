@@ -1,6 +1,6 @@
 from linebot.models import TextSendMessage
 
-from mainBot.models import Label_Url
+from mainBot.models import Label_Url, Global_Label_Url
 
 def createLabel(usrMsgText, uid):
     message = []
@@ -30,25 +30,42 @@ def listLabel(usrMsgText, uid):
         message.append(TextSendMessage(text=resMsgText))
 
     else:
-        resMsgText = '您目前可用的標籤如下：\n'
-        labelSet = set()
+        resMsgText = '您目前可用的標籤如下\n\n'
+        resMsgText += '您的私人標籤：\n'
 
-        labelQuery = Label_Url.objects.filter(uid=uid)
-        for labelItem in labelQuery:
-            labelSet.add(labelItem.labelName)
-
-        labelQuery = Label_Url.objects.filter(uid='Global')
-        for labelItem in labelQuery:
-            labelSet.add(labelItem.labelName)
-
+        myLabel = Label_Url.objects.filter(uid=uid)
         index = 1
-        for labelName in labelSet:
-            resMsgText += str(index) + '. ' + labelName + '\n'
+        for labelItem in myLabel:
+            resMsgText += str(index) + '. ' + labelItem.labelName + '\n'
             index+=1
-
+        
+        resMsgText += '\n預設標籤:\n'
+        globalLabel = Global_Label_Url.objects.filter()
+        index = 1
+        for labelItem in globalLabel:
+            resMsgText += str(index) + '. ' + labelItem.labelName + '\n'
+            index+=1
         message.append(TextSendMessage(text=resMsgText))
 
     return message
 
+def delLabel(usrMsgText, uid):
+    message = []
+    msgArr = usrMsgText.split()
 
+    if(len(msgArr) != 2):
+        resMsgText = '指令格式錯誤，請重新輸入'
+        message.append(TextSendMessage(text=resMsgText))
+
+    else:
+        if(Label_Url.objects.filter(uid=uid, labelName=msgArr[1]).exists() == True):
+            Label_Url.objects.filter(uid=uid, labelName=msgArr[1]).delete()
+            resMsgText = '標籤已刪除'
+            message.append(TextSendMessage(text=resMsgText))
+        else:
+            Label_Url.objects.create(uid=uid, labelName=msgArr[1], url=msgArr[2])
+            resMsgText = '尚未登記此標籤'
+            message.append(TextSendMessage(text=resMsgText))
+
+    return message
 

@@ -59,12 +59,18 @@ def callback(request):
 
                 # 已註冊
                 elif (User_Info.objects.filter(uid=uid).exists() == True):
-                    if(usrMsgText[1:5] == '新增標籤'):
+                    if(usrMsgText[1:3] == '註冊'):
+                        message.append(TextSendMessage(text='請勿重複註冊'))
+                    elif(usrMsgText[1:5] == '新增標籤'):
                         res = createLabel(usrMsgText, uid)
                         message.extend(res)
                     elif(usrMsgText[1:5] == '查詢標籤'):
                         res = listLabel(usrMsgText, uid)
                         message.extend(res)
+                    elif(usrMsgText[1:5] == '刪除標籤'):
+                        res = delLabel(usrMsgText, uid)
+                        message.extend(res)
+                    
 
 
                 line_bot_api.reply_message(event.reply_token, message)
