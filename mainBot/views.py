@@ -8,7 +8,7 @@ from linebot import LineBotApi, WebhookParser
 from linebot.exceptions import InvalidSignatureError, LineBotApiError
 from linebot.models import MessageEvent, TextSendMessage
 
-from mainBot.models import User_Info, License_Key
+from mainBot.models import user_info, license_key
 
 from mainBot.reqHandler.register import *
 from mainBot.reqHandler.label import *
@@ -53,12 +53,12 @@ def callback(request):
                     message.extend(res)
 
                 # 未註冊
-                elif (User_Info.objects.filter(uid=uid).exists() == False):
+                elif (user_info.objects.filter(uid=uid).exists() == False):
                     res = regist(usrMsgText, uid, usrName)
                     message.extend(res)
 
                 # 已註冊
-                elif (User_Info.objects.filter(uid=uid).exists() == True):
+                elif (user_info.objects.filter(uid=uid).exists() == True):
                     if(usrMsgText[1:3] == '註冊'):
                         message.append(TextSendMessage(text='請勿重複註冊'))
                     elif(usrMsgText[1:5] == '新增標籤'):
@@ -69,6 +69,9 @@ def callback(request):
                         message.extend(res)
                     elif(usrMsgText[1:5] == '刪除標籤'):
                         res = delLabel(usrMsgText, uid)
+                        message.extend(res)
+                    elif(usrMsgText[1:3] == '答案'):
+                        res = findAns(usrMsgText[3:], uid)
                         message.extend(res)
                     
 

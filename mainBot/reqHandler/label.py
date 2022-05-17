@@ -1,6 +1,6 @@
 from linebot.models import TextSendMessage
 
-from mainBot.models import Label_Url, Global_Label_Url
+from mainBot.models import label_url, global_label_url
 
 def createLabel(usrMsgText, uid):
     message = []
@@ -11,11 +11,11 @@ def createLabel(usrMsgText, uid):
         message.append(TextSendMessage(text=resMsgText))
 
     else:
-        if(Label_Url.objects.filter(uid=uid, labelName=msgArr[1]).exists() == True):
+        if(label_url.objects.filter(uid=uid, labelName=msgArr[1]).exists() == True):
             resMsgText = '標籤已存在，請勿重複標記'
             message.append(TextSendMessage(text=resMsgText))
         else:
-            Label_Url.objects.create(uid=uid, labelName=msgArr[1], url=msgArr[2])
+            label_url.objects.create(uid=uid, labelName=msgArr[1], url=msgArr[2])
             resMsgText = '標籤' + msgArr[1] + '登記成功'
             message.append(TextSendMessage(text=resMsgText))
 
@@ -33,14 +33,14 @@ def listLabel(usrMsgText, uid):
         resMsgText = '您目前可用的標籤如下\n\n'
         resMsgText += '您的私人標籤：\n'
 
-        myLabel = Label_Url.objects.filter(uid=uid)
+        myLabel = label_url.objects.filter(uid=uid)
         index = 1
         for labelItem in myLabel:
             resMsgText += str(index) + '. ' + labelItem.labelName + '\n'
             index+=1
         
         resMsgText += '\n預設標籤:\n'
-        globalLabel = Global_Label_Url.objects.filter()
+        globalLabel = global_label_url.objects.filter()
         index = 1
         for labelItem in globalLabel:
             resMsgText += str(index) + '. ' + labelItem.labelName + '\n'
@@ -58,12 +58,12 @@ def delLabel(usrMsgText, uid):
         message.append(TextSendMessage(text=resMsgText))
 
     else:
-        if(Label_Url.objects.filter(uid=uid, labelName=msgArr[1]).exists() == True):
-            Label_Url.objects.filter(uid=uid, labelName=msgArr[1]).delete()
+        if(label_url.objects.filter(uid=uid, labelName=msgArr[1]).exists() == True):
+            label_url.objects.filter(uid=uid, labelName=msgArr[1]).delete()
             resMsgText = '標籤已刪除'
             message.append(TextSendMessage(text=resMsgText))
         else:
-            Label_Url.objects.create(uid=uid, labelName=msgArr[1], url=msgArr[2])
+            label_url.objects.create(uid=uid, labelName=msgArr[1], url=msgArr[2])
             resMsgText = '尚未登記此標籤'
             message.append(TextSendMessage(text=resMsgText))
 

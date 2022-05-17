@@ -1,6 +1,6 @@
 from linebot.models import TextSendMessage
 
-from mainBot.models import User_Info, License_Key
+from mainBot.models import user_info, license_key
 
 #handle regist
 def regist(usrMsgText , uid, usrName):
@@ -9,9 +9,9 @@ def regist(usrMsgText , uid, usrName):
     if(usrMsgText[1:3] == '註冊'):
         licenseKey = usrMsgText[3:].replace(' ', '')
 
-        if(License_Key.objects.filter(licenseKey=licenseKey).exists() == True):
-            User_Info.objects.create(uid=uid, licenseKey=licenseKey)
-            License_Key.objects.filter(licenseKey=licenseKey).delete()
+        if(license_key.objects.filter(licenseKey=licenseKey).exists() == True):
+            user_info.objects.create(uid=uid, licenseKey=licenseKey)
+            license_key.objects.filter(licenseKey=licenseKey).delete()
             resMsgText = usrName + '成功註冊'
             message.append(TextSendMessage(text=resMsgText))
 
