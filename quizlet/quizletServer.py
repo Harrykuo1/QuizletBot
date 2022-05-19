@@ -8,7 +8,11 @@ from decouple import config
 account = config('quizletUser')
 passwd = config('quizletPasswd')
 
-#myEngine = quizletEngine(account, passwd)
+url = "https://quizlet.com/explanations/textbook-solutions/university-calculus-early-transcendentals-3rd-edition-9780321999573"
+bigChapter = 3
+smallChapter = 2
+questionList = [2,3]
+myEngine = quizletEngine(account, passwd)
 #myEngine.browsePage(url, bigChapter, smallChapter, questionList)
 
 HOST = '0.0.0.0'
@@ -23,9 +27,29 @@ while True:
     conn, addr = server.accept()
     clientMessage = str(conn.recv(1024), encoding='utf-8')
 
-    print('Client message is:', clientMessage)
+    clientMessageArr = list(clientMessage.split())
+    url = clientMessageArr[0]
+    bigChapter = int(clientMessageArr[1])
+    smallChapter = int(clientMessageArr[2])
+    questionList = list(map(int, clientMessageArr[3:]))
 
-    serverMessage = clientMessage
+    print('Client message is:', clientMessage)
+    print("url: ", url)
+    print("bigChapter : ", bigChapter)
+    print("smallChapter: ", smallChapter)
+
+    """url = "https://quizlet.com/explanations/textbook-solutions/university-calculus-early-transcendentals-3rd-edition-9780321999573"
+    bigChapter = 3
+    smallChapter = 2
+    questionList = [2,3]"""
+
+
+
+    res = myEngine.browsePage(url, bigChapter, smallChapter, questionList)
+    serverMessage = ''
+    for photoID in res:
+        serverMessage += str(photoID) + ' '
+
     conn.sendall(serverMessage.encode())
     conn.close()
     

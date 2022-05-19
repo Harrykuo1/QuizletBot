@@ -48,15 +48,18 @@ services:
   selenium:
     build: ./quizlet
     container_name: selenium
-    shm_size: 2gb
+    restart: always
+    shm_size: 3GB
     ports:
         - 7777:7777
         - "4444:4444"
         - "7900:7900"
     volumes:
       - ./quizlet:/quizlet
+      - ./static/photo/:/quizlet/photo
     command: >
       sh -c "python3 quizletServer.py"
+    platform: linux/amd64
 
     
 
