@@ -13,7 +13,7 @@ from mainBot.models import user_info, license_key
 from mainBot.reqHandler.register import *
 from mainBot.reqHandler.label import *
 from mainBot.reqHandler.help import *
-
+from mainBot.reqHandler.answer import *
 
 line_bot_api = LineBotApi(settings.LINE_CHANNEL_ACCESS_TOKEN)
 parser = WebhookParser(settings.LINE_CHANNEL_SECRET)

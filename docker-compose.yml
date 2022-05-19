@@ -13,8 +13,10 @@ services:
       - .:/app
     depends_on:
       - mysql  
+      - selenium
     links: 
       - mysql
+      - selenium
     command: >
       sh -c "python3 manage.py runserver 0.0.0.0:8000"
     
@@ -39,6 +41,8 @@ services:
       MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
       MYSQL_ROOT_PASSWORD: '${DB_ROOT_PASSWORD}'
       MYSQL_ROOT_HOST: "%"
+    security_opt:
+      - seccomp:unconfined
     platform: linux/amd64
 
   selenium:
@@ -46,12 +50,13 @@ services:
     container_name: selenium
     shm_size: 2gb
     ports:
+        - 7777:7777
         - "4444:4444"
         - "7900:7900"
     volumes:
       - ./quizlet:/quizlet
     command: >
-      sh -c "python3 seleTest.py"
+      sh -c "python3 quizletServer.py"
 
     
 

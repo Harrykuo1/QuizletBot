@@ -11,26 +11,21 @@ passwd = config('quizletPasswd')
 #myEngine = quizletEngine(account, passwd)
 #myEngine.browsePage(url, bigChapter, smallChapter, questionList)
 
-sockFile = 'socket.sock'
+HOST = '0.0.0.0'
+PORT = 7777
 
-try:
-    os.unlink(sockFile)
-    pass
-except OSError:
-    if os.path.exists(sockFile):
-        raise
-    pass
+server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server.setsockopt(socket.SOL_SOCKET,socket.SO_REUSEADDR,1)
+server.bind((HOST, PORT))
+server.listen(10)
 
-# 指定协议
-server = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
-server.bind(sockFile)
-# 监听
-server.listen(1)
-print("Prepare finish")
 while True:
-    clientsocket, address = server.accept()
-    data = clientsocket.recv(1024)
-    print(data)
-    clientsocket.close()
+    conn, addr = server.accept()
+    clientMessage = str(conn.recv(1024), encoding='utf-8')
 
+    print('Client message is:', clientMessage)
+
+    serverMessage = clientMessage
+    conn.sendall(serverMessage.encode())
+    conn.close()
     
