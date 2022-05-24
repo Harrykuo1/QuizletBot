@@ -23,6 +23,10 @@ chrome_options.add_argument('--disable-infobars')
 chrome_options.add_argument('--no-first-run --no-service-autorun --password-store=basic')
 chrome_options.add_argument('User-Agent=Mozilla/5.0 (Linux; U; Android 8.1.0; zh-cn; BLA-AL00 Build/HUAWEIBLA-AL00) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/57.0.2987.132 MQQBrowser/8.9 Mobile Safari/537.36')
 
+"""cookies = browser.get_cookies()
+print(f"main: cookies = {cookies}")
+browser.delete_all_cookies()"""
+
 #driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
 driver = uc.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options, version_main=94)
 driver.get(url)

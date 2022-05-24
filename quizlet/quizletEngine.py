@@ -61,43 +61,46 @@ class quizletEngine:
 
     def browsePage(self, url, bigChapter, smallChapter, questionList):
         photoIDArr = []
+        #try:
         for questionIndex in questionList:
+            print(bigChapter, smallChapter, questionIndex, end="\n")
             self.driver.get(url)
             self.driver.find_element(by=By.CSS_SELECTOR, value="[aria-label=第"+str(bigChapter)+"章]").click()
-            header = self.driver.find_elements(By.CLASS_NAME, "twe4x3d")
             antiBan()
 
-            allChild = header[bigChapter-1].find_elements(By.TAG_NAME, "button")
-            allChild[smallChapter-1].click()
+            smallChapterList = self.driver.find_elements(by=By.CSS_SELECTOR, value="[aria-label^=第"+str(bigChapter)+"]")
+            smallChapterList[smallChapter-1+1].click()
             antiBan()
 
-            header = self.driver.find_elements(By.CLASS_NAME, "e1xvy4j")
-            allChild = header[bigChapter-1].find_elements(By.CLASS_NAME, "e1nsy6m5")
+            tmpRoot = self.driver.find_elements(by=By.CSS_SELECTOR, value="[data-testid=TextbookTableOfContentsChapterMenu]")
+            root = tmpRoot[bigChapter-1].find_element(by=By.CSS_SELECTOR, value="div>div>div>div>div:nth-child(2)>div>div>div:nth-child(%s)>span>a>span" %questionIndex)
+            antiBan()
 
-
-            target = allChild[questionIndex-1].find_element(By.TAG_NAME, "span")
-            target = target.find_element(By.TAG_NAME, "a")
-            target.click()
+            root.click()
             antiBan()
 
             res = self.screenShot()
             photoIDArr.append(res)
         
         return photoIDArr
-        """except:
-            self.driver.save_screenshot('photo/' + str('error') + '.png')"""
+        #except:
+            #self.driver.save_screenshot('photo/' + str('error') + '.png')
+            
 
 
     def screenShot(self):
-        js="var q=document.documentElement.scrollTop=100000"
-        self.driver.execute_script(js)
-        time.sleep(2)
+        try:
+            js="var q=document.documentElement.scrollTop=100000"
+            self.driver.execute_script(js)
+            time.sleep(2)
 
-        self.driver.find_element(by=By.CSS_SELECTOR, value="[aria-label=顯示所有步驟]").click()
-        antiBan()
+            self.driver.find_element(by=By.CSS_SELECTOR, value="[aria-label=顯示所有步驟]").click()
+            antiBan()
 
-        js="var q=document.documentElement.scrollTop=0"
-        self.driver.execute_script(js)
+            js="var q=document.documentElement.scrollTop=0"
+            self.driver.execute_script(js)
+        except:
+            pass
         time.sleep(2)
         res = self.photoID
         self.driver.save_screenshot('photo/' + str(self.photoID) + '.png')

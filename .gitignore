@@ -1,5 +1,5 @@
 .env
 quizlet/.env
 data/db
-quizlet/photo
+static/photo
 quizlet/temp
