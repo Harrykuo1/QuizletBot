@@ -29,9 +29,9 @@ while True:
 
     clientMessageArr = list(clientMessage.split())
     url = clientMessageArr[0]
-    bigChapter = int(clientMessageArr[1])
-    smallChapter = int(clientMessageArr[2])
-    questionList = list(map(int, clientMessageArr[3:]))
+    chapter = str(clientMessageArr[1])
+    questionList = list(map(int, clientMessageArr[2:]))
+    bigChapter, smallChapter =  map(int,chapter.split("-"))
 
     print('Client message is:', clientMessage)
     print("url: ", url)

@@ -69,8 +69,8 @@ def reqAns(reqMsg):
     for item in serverMessageArr:
         message.append(ImageSendMessage(original_content_url=webhookUrl+photoFolder+str(item)+'.png', preview_image_url=webhookUrl+photoFolder+str(item)+'.png'))
     
-    resMsgText = 'Search over!'
-    message.append(TextSendMessage(text=resMsgText))
+    #resMsgText = 'Search over!'
+    #message.append(TextSendMessage(text=resMsgText))
     client.close()
     return message
 

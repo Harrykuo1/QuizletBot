@@ -7,7 +7,7 @@ import undetected_chromedriver.v2 as uc
 from selenium.webdriver.chrome.service import Service
 
 def antiBan():
-    time.sleep(1)
+    time.sleep(0.8)
 
 class quizletEngine:
     def __init__(self, account, passwd) -> None:
@@ -87,7 +87,6 @@ class quizletEngine:
             #self.driver.save_screenshot('photo/' + str('error') + '.png')
             
 
-
     def screenShot(self):
         try:
             js="var q=document.documentElement.scrollTop=100000"
@@ -102,8 +101,19 @@ class quizletEngine:
         except:
             pass
         time.sleep(2)
+
+
         res = self.photoID
-        self.driver.save_screenshot('photo/' + str(self.photoID) + '.png')
+
+        original_size = self.driver.get_window_size()
+        required_width = self.driver.execute_script('return document.body.parentNode.scrollWidth')
+        required_height = self.driver.execute_script('return document.body.parentNode.scrollHeight')
+        self.driver.set_window_size(required_width, required_height)
+        # driver.save_screenshot(path)  # has scrollbar
+        self.driver.find_element_by_tag_name('body').screenshot('photo/' + str(self.photoID) + '.png')  # avoids scrollbar
+        self.driver.set_window_size(original_size['width'], original_size['height'])
+        
+        #self.driver.save_screenshot('photo/' + str(self.photoID) + '.png')
         self.photoID+=1
         self.checkPhotoID()
         time.sleep(2)
