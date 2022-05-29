@@ -63,7 +63,6 @@ def delLabel(usrMsgText, uid):
             resMsgText = '標籤已刪除'
             message.append(TextSendMessage(text=resMsgText))
         else:
-            label_url.objects.create(uid=uid, labelName=msgArr[1], url=msgArr[2])
             resMsgText = '尚未登記此標籤'
             message.append(TextSendMessage(text=resMsgText))
 
