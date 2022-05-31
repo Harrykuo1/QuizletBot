@@ -13,10 +13,10 @@ services:
       - .:/app
     depends_on:
       - mysql  
-      - selenium
+      - quizlet
     links: 
       - mysql
-      - selenium
+      - quizlet
     command: >
       sh -c "python3 manage.py runserver 0.0.0.0:8000"
     
@@ -45,9 +45,9 @@ services:
       - seccomp:unconfined
     platform: linux/amd64
 
-  selenium:
+  quizlet:
     build: ./quizlet
-    container_name: selenium
+    container_name: quizlet
     restart: always
     shm_size: 3GB
     ports:

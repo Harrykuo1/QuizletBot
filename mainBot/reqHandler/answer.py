@@ -53,7 +53,7 @@ def reqAns(reqMsg):
     webhookUrl = config('webhookUrl')
     photoFolder = '/static/photo/'
     message = []
-    HOST = 'selenium'
+    HOST = 'quizlet'
     PORT = 7777
     clientMessage = reqMsg
 
