@@ -62,6 +62,18 @@ services:
       sh -c "python3 quizletServer.py"
     platform: linux/amd64
 
+  ecourse:
+    build: ./ecourse
+    container_name: ecourse
+    restart: always
+    shm_size: 3GB
+    ports:
+        - 7777:7777
+    volumes:
+      - ./ecourse:/ecourse
+
+    platform: linux/amd64
+
     
 
 
