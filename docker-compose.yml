@@ -14,9 +14,11 @@ services:
     depends_on:
       - mysql  
       - quizlet
+      - ecourse
     links: 
       - mysql
       - quizlet
+      - ecourse
     command: >
       sh -c "python3 manage.py runserver 0.0.0.0:8000"
     
@@ -68,9 +70,11 @@ services:
     restart: always
     shm_size: 3GB
     ports:
-        - 7777:7777
+        - 8888:8888
     volumes:
       - ./ecourse:/ecourse
+    command: >
+      sh -c "python3 ecourseServer.py"
 
     platform: linux/amd64
 

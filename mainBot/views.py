@@ -14,6 +14,7 @@ from mainBot.reqHandler.register import *
 from mainBot.reqHandler.label import *
 from mainBot.reqHandler.help import *
 from mainBot.reqHandler.answer import *
+from mainBot.reqHandler.ecourse import *
 
 line_bot_api = LineBotApi(settings.LINE_CHANNEL_ACCESS_TOKEN)
 parser = WebhookParser(settings.LINE_CHANNEL_SECRET)
@@ -72,6 +73,9 @@ def callback(request):
                         message.extend(res)
                     elif(usrMsgText[1:3] == '答案'):
                         res = findAns(usrMsgText[3:], uid)
+                        message.extend(res)
+                    elif(usrMsgText[1:3] == '成績'):
+                        res = searchScore(usrMsgText[3:], uid)
                         message.extend(res)
                     
 
