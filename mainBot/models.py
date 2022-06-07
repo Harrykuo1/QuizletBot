@@ -33,5 +33,13 @@ class global_label_url(models.Model):
     def __str__(self):
         return self.uid  
 
+class image_cmd_tmp(models.Model):
+    uid = models.CharField(max_length=50, null=False, default='')   
+    cmd = models.CharField(max_length=30, null=False, default='')   
+    mdt = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.uid  
+
 
     
