@@ -78,7 +78,7 @@ def transImg(imgName):
 
         T.append(text)
 
-        file_name = str(i) + '.jpg'
+        file_name = './static/tmp/' + str(i) + '.jpg'
         cv2.imwrite(file_name, bin_img)
         i += 1
 
@@ -102,7 +102,7 @@ def transImg(imgName):
         V.clear()
         y = 0
         x += 1
-
+    resArr.sort()
     return resArr
 
 def findAnsByImg(questionsArr, uid):
