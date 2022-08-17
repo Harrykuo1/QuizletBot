@@ -6,7 +6,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 import undetected_chromedriver.v2 as uc
 from selenium.webdriver.chrome.service import Service
 
-def antiBan():
+def antiBan(): #防止操作太快被ban，設置停頓時間
     time.sleep(0.8)
 
 class quizletEngine:
@@ -21,11 +21,11 @@ class quizletEngine:
         except:
             print("Already Login finish")
 
-    def checkPhotoID(self):
+    def checkPhotoID(self): #防止圖片無限增加
         if(self.photoID > 999999999):
             self.photoID = 100000000
 
-    def setup(self):
+    def setup(self): #設定Chrome driver參數
         chrome_options = webdriver.ChromeOptions()
         chrome_options.user_data_dir = "temp/profile"
         chrome_options.add_argument('--headless')
@@ -43,7 +43,7 @@ class quizletEngine:
         #driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
         self.driver = uc.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options, version_main=94)
 
-    def login(self):
+    def login(self): #找到登入按鈕並成功登入
         self.driver.get(self.loginUrl)
         self.driver.save_screenshot('photo/' + str(1) + '.png')
         self.driver.find_element(By.CLASS_NAME, "SiteNavLoginSection-loginButton").click()
@@ -59,7 +59,7 @@ class quizletEngine:
 
         print("Login finish")
 
-    def browsePage(self, url, bigChapter, smallChapter, questionList):
+    def browsePage(self, url, bigChapter, smallChapter, questionList): #搜尋章節和題號
         photoIDArr = []
         #try:
         for questionIndex in questionList:
@@ -87,7 +87,7 @@ class quizletEngine:
             #self.driver.save_screenshot('photo/' + str('error') + '.png')
             
 
-    def screenShot(self):
+    def screenShot(self): #把視窗放大至容納得下所有解答後截圖
         try:
             js="var q=document.documentElement.scrollTop=100000"
             self.driver.execute_script(js)
